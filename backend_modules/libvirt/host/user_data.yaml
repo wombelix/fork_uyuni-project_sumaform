@@ -7,7 +7,7 @@ chpasswd:
   list: |
      root:linux
 
-%{ if image == "tumbleweedo" ~}
+%{ if image == "tumbleweedo" || image == "tumbleweedarmo" ~}
 zypper:
   repos:
     - id: tools_pool_repo
