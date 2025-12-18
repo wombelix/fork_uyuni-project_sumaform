@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0">
   <xsl:output omit-xml-declaration="yes" indent="yes"/>
@@ -29,7 +29,13 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="/domain/devices/interface"/>
+  <xsl:template match="/domain/devices/interface">
+    <interface type='user'>
+      <xsl:apply-templates select="mac"/>
+      <model type='virtio'/>
+      <link state='down'/>
+    </interface>
+  </xsl:template>
 
   <xsl:template match="/domain/features">
     <xsl:copy>
@@ -43,9 +49,10 @@
       <xsl:apply-templates select="node()|@*"/>
       <qemu:commandline>
         <qemu:arg value='-netdev'/>
-        <qemu:arg value='stream,id=net0,addr.type=unix,addr.path=/opt/homebrew/var/run/socket_vmnet'/>
+        <qemu:arg value='stream,id=vmn0,addr.type=unix,addr.path=/opt/homebrew/var/run/socket_vmnet'/>
         <qemu:arg value='-device'/>
-        <qemu:arg value='virtio-net-pci,netdev=net0,addr=0x10,mac=52:54:00:12:34:56'/>
+        <xsl:variable name="gent_mac" select="string(/domain/devices/interface[1]/mac/@address)"/>
+        <qemu:arg value='virtio-net-pci,netdev=vmn0,addr=0x10,mac={$gent_mac}'/>
       </qemu:commandline>
     </xsl:copy>
   </xsl:template>
