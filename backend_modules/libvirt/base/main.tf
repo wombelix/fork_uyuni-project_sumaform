@@ -43,6 +43,7 @@ locals {
     suma43VM-ign             = "${var.use_mirror_images ? "http://${var.mirror}" : "http://dist.suse.de"}/ibs/Devel:/Galaxy:/Manager:/4.3/images/SUSE-Manager-Server.x86_64-KVM-x86_64.qcow2"
     leapmicro55o             = "${var.use_mirror_images ? "http://${var.mirror}" : "http://download.opensuse.org"}/distribution/leap-micro/5.5/appliances/openSUSE-Leap-Micro.x86_64-Default-qcow.qcow2"
     tumbleweedo              = "${var.use_mirror_images ? "http://${var.mirror}" : "http://download.opensuse.org"}/tumbleweed/appliances/openSUSE-Tumbleweed-Minimal-VM.x86_64-Cloud.qcow2"
+    tumbleweedarmo           = "${var.use_mirror_images ? "http://${var.mirror}" : "http://download.opensuse.org"}/ports/aarch64/tumbleweed/appliances/openSUSE-Tumbleweed-Minimal-VM.aarch64-Cloud.qcow2"
   }
   compressed_images = toset(["openeuler2403o"])
   pool               = lookup(var.provider_settings, "pool", "default")
