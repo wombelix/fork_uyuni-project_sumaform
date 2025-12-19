@@ -48,13 +48,17 @@
     <xsl:copy>
       <xsl:apply-templates select="node()|@*"/>
 
-      <xsl:variable name="genmac" select="string(/domain/devices/interface[1]/mac/@address)"/>
+      <xsl:variable name="genmac" select="devices/interface[1]/mac/@address"/>
 
       <qemu:commandline>
         <qemu:arg value='-netdev'/>
         <qemu:arg value='stream,id=vmn0,addr.type=unix,addr.path=/opt/homebrew/var/run/socket_vmnet'/>
         <qemu:arg value='-device'/>
-        <qemu:arg value='virtio-net-pci,netdev=vmn0,bus=pcie.0,addr=0x10,mac={$genmac}'/>
+        <qemu:arg>
+          <xsl:attribute name="value">
+            <xsl:value-of select="concat('virtio-net-pci,netdev=vmn0,bus=pcie.0,addr=0x10,mac=', $genmac)"/>
+          </xsl:attribute>
+        </qemu:arg>
       </qemu:commandline>
     </xsl:copy>
   </xsl:template>
